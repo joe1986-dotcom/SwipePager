@@ -11,19 +11,20 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    private List<String> mData;
+    private ArrayList<Word> mWordList;
     private LayoutInflater mInflater;
     private ViewPager2 viewPager2;
 
 
     private int[] colorArray = new int[]{android.R.color.black, android.R.color.holo_blue_dark, android.R.color.holo_green_dark, android.R.color.holo_red_dark};
 
-    RecyclerViewAdapter(Context context, List<String> data, ViewPager2 viewPager2) {
+    RecyclerViewAdapter(Context context, ArrayList<Word> wordList, ViewPager2 viewPager2) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = data;
+        this.mWordList = wordList;
         this.viewPager2 = viewPager2;
     }
 
@@ -36,22 +37,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String animal = mData.get(position);
-        holder.myTextView.setText(animal);
+        Word targetWord = mWordList.get(position);
+
+        holder.textViewName.setText(targetWord.getName());
+        holder.textViewContents.setText(targetWord.getContents());
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mWordList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView myTextView;
+        TextView textViewName;
+        TextView textViewContents;
+
         LinearLayout linearLayout;
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.tvTitle);
+            textViewName = itemView.findViewById(R.id.name);
+            textViewContents = itemView.findViewById(R.id.contents);
             linearLayout = itemView.findViewById(R.id.container);
         }
     }
