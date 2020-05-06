@@ -1,5 +1,6 @@
 package com.example.swipepager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -28,9 +29,21 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> tab.setText("OBJECT" + (position + 1))
-        ).attach();
+                (tab, position) ->{
+                        switch (position){
+                            case 0:
+                                tab.setText("勇気");
+                                break;
+                            case 1:
+                                tab.setText("希望");
+                                break;
+                            case 2:
+                                tab.setText("怒り");
+                                break;
+                            case 3:
+                                tab.setText("激励");
+                                break;
+                        }
+                    }).attach();
     }
-
-
 }

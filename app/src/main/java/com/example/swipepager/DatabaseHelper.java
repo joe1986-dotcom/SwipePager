@@ -11,12 +11,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_NAME_ID = "id";
     private static final String COLUMN_NAME_NAME = "name";
     private static final String COLUMN_NAME_CONTENTS = "contents";
+    private static final String COLUMN_NAME_JOB = "job";
     private static final String COLUMN_NAME_TAGS = "tags";
 
     private static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " ( " +
                                                         COLUMN_NAME_ID + " INTEGER PRIMARY KEY," +
                                                         COLUMN_NAME_NAME + " TEXT, " +
                                                         COLUMN_NAME_CONTENTS + " TEXT, " +
+                                                        COLUMN_NAME_JOB + " TEXT, " +
                                                         COLUMN_NAME_TAGS + " TEXT " +
                                                      " )";
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME ;
@@ -27,10 +29,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void createTable(SQLiteDatabase db) {
-         db.execSQL(SQL_CREATE_ENTRIES);
-         // db.execSQL(getInsertStr(1,"Aさん","名言1","怒り"));
-         db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES(1,'Aさん','名言1', '怒り');");
-         db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES(2,'Bさん','名言2', '激励');");
+        db.execSQL(SQL_CREATE_ENTRIES);
+        InsertData(db);
+    }
+
+    private void InsertData(SQLiteDatabase db){
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('1','スティーブ・ジョブズ','ベストを尽くして失敗したら、ベストを尽くしたってことさ','アップル創業者','激励');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('2','秋元康','いつか、必ず、チャンスの順番が来ると信じなさい','プロデューサー','希望');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('3','落合博満','前向きにもがき苦しむ経験は、すぐに結果に結びつかなくても、必ず自分の生きる力になっていく','プロ野球監督','希望');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('4','糸井重里','「ゴールは遠いなぁ」と、がっかりするのも道のりです','コピーライター','激励');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('5','SLAM　DUNK','「負けたことがある」というのが　いつか　大きな財産になる','マンガ','激励');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('6','ドラえもん','きみはこれからも何度もつまづく。でもそのたびに立ち直る強さももってるんだよ','マンガ','激励');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('7','水谷豊','常に今日は明日の準備ですからね。今日やったことは必ず明日に返ってくるんです','俳優','希望');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('8','イチロー','小さいことを積み重ねるのが、とんでもないところへ行くただひとつの道だと思っています','プロ野球選手','希望');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('9','村上龍','モチベーションという概念は、希望につながっていなければならない','作家','希望');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('10','津田恒実','弱気は最大の敵','プロ野球選手','激励');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('11','池上彰','一度地獄を見ると、世の中につらい仕事はなくなるんです。苦しい経験を若いうちにするからこそ、得られるものもある','ジャーナリスト','激励');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('12','佐々木則夫','成功の反対は失敗ではなく「やらないこと」だ','サッカー指導者','勇気');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('13','マツコ・デラックス','自分が幸せかどうかは、自分で決めるしかないのよ','タレント','激励');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('14','スティーブ・ジョブズ','何かを捨てないと前に進めない','アップル創業者','勇気');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('15','笑福亭鶴瓶','家をきれいにする、約束を守る、お礼の手紙を書く、そういう基本をきっちり続けることが、自分の型の基本をつくってくれたと思っています','タレント','希望');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('16','SLAM　DUNK','あきらめたらそこで試合終了だよ','マンガ','希望');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('17','ドラえもん','いちばんいけないのはじぶんなんかだめだと思いこむことだよ','マンガ','激励');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('18','マルクス・アウレリウス','腋臭（わきが）の人間に君は腹を立てるのか。息がくさい人間に君は腹を立てるのか。その人間がどうしたらいいというのか。彼はそういう口を持っているのだ。また、そういう腋を持っているのだ。やむをえないことではないか。','ローマ皇帝','希望');");
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES('19','徳川家康','怒りを敵と思え。','政治家','怒り')");
     }
 
     private String getInsertStr(int id, String name, String contents, String tags){

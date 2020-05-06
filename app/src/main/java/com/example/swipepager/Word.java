@@ -5,12 +5,14 @@ public class Word {
     private int wordId;
     private String name;
     private String contents;
+    private String job;
     private String tags;
 
-    public Word(int wordId, String name, String contents, String tags) {
+    public Word(int wordId, String name, String contents, String job, String tags) {
         this.wordId = wordId;
         this.name = name;
         this.contents = contents;
+        this.job     = job;
         this.tags = tags;
     }
 
@@ -40,6 +42,14 @@ public class Word {
 
     public String getTags() {
         return tags;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
     }
 
     public void setTags(String tags) {

@@ -30,6 +30,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.word_item,parent, false);
         WordViewHolder wordViewHolder = new WordViewHolder(itemView);
 
+        // アイテムを押された時の処理
         return wordViewHolder;
     }
 
@@ -44,18 +45,18 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
         return mWordList == null ? 0 : mWordList.size();
     }
 
-    public static class WordViewHolder extends RecyclerView.ViewHolder{
-        TextView name,contents;
+    public static class WordViewHolder extends RecyclerView.ViewHolder {
+        TextView name, contents;
         LinearLayout view_container;
 
-    public WordViewHolder(@NonNull View itemView) {
-        super(itemView);
+        public WordViewHolder(@NonNull View itemView) {
+            super(itemView);
 
-        name = itemView.findViewById(R.id.name);
-        contents = itemView.findViewById(R.id.contents);
-        view_container = itemView.findViewById(R.id.container);
+            name = itemView.findViewById(R.id.name);
+            contents = itemView.findViewById(R.id.contents);
+            view_container = itemView.findViewById(R.id.container);
+        }
     }
-}
 
 }
 
