@@ -52,7 +52,7 @@ public class ListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         ArrayList<Word> data = LoadData(position);
-        WordAdapter wordAdapter = new WordAdapter(data);
+        WordAdapter wordAdapter = new WordAdapter(getContext(), data);
         mRecyclerView.setAdapter(wordAdapter);
         super.onViewCreated(view, savedInstanceState);
     }
