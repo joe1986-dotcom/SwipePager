@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">SwipePager</string>
+    <string name="table_name_word">word</string>
+    <string name="table_name_favorite">favorite</string>
+
 </resources>

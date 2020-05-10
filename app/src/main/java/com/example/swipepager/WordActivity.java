@@ -2,11 +2,20 @@ package com.example.swipepager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class WordActivity extends AppCompatActivity {
+
+
+    private int wordId = -1;
+    DatabaseHelper databaseHelper = null;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +24,22 @@ public class WordActivity extends AppCompatActivity {
 
         // データを取得して画面にセット
         setData();
+
+        Button button = findViewById(R.id.favoriteButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // db取得
+                if(databaseHelper == null){
+                    databaseHelper = new DatabaseHelper( getApplicationContext());
+                }
+
+                if(db == null){
+                    db = databaseHelper.getReadableDatabase();
+                }
+                db.execSQL("INSERT INTO " + "favorite(wordId)" + "" + " VALUES("+ wordId + ");");
+            }
+        });
 
     }
     private void setData(){
@@ -25,7 +50,7 @@ public class WordActivity extends AppCompatActivity {
         TextView word_tags = findViewById(R.id.tags);
 
         // data get
-        int id = getIntent().getExtras().getInt("id");
+        wordId = getIntent().getExtras().getInt("id");
         String name = getIntent().getExtras().getString("name");
         String contents = getIntent().getExtras().getString("contents");
         String job = getIntent().getExtras().getString("job");
