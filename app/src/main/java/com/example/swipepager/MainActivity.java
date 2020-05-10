@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
                             case 3:
                                 tab.setText("激励");
                                 break;
+                            case 4:
+                                tab.setText("お気に入り");
+                                break;
                         }
                     }).attach();
     }

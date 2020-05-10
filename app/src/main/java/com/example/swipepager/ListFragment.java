@@ -86,49 +86,82 @@ public class ListFragment extends Fragment {
             db = databaseHelper.getReadableDatabase();
         }
         //カーソルを移動して上から順に読み込んでるイメージ。
-        Cursor cursor = db.query(
-                "word",
-                new String[] { "id", "name", "contents", "job", "tags" },
-                null,
-                null,
-                null,
-                null,
-                null
-        );
+        if(position != 4) {
+            data = getWordData(position);
+        }
+        else {
+            data = getFavoriteData();
+        }
+
+
+        return data;
+    }
+
+        private  ArrayList<Word> getWordData (int position) {
+            ArrayList<Word> data = new ArrayList<>();
+            Cursor cursor = db.query(
+                    "word",
+                    new String[]{"id", "name", "contents", "job", "tags"},
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            cursor.moveToFirst();
+
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < cursor.getCount(); i++) {
+                int wordId = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String contents = cursor.getString(2);
+                String job = cursor.getString(3);
+                String tags = cursor.getString(4);
+
+                Word word = new Word(wordId, name, contents, job, tags);
+                if (position == 0 && word.getTags().equals("勇気")) {
+                    data.add(word);
+                } else if (position == 1 && word.getTags().equals("希望")) {
+                    data.add(word);
+                } else if (position == 2 && word.getTags().equals("怒り")) {
+                    data.add(word);
+                } else if (position == 3 && word.getTags().equals("激励")) {
+                    data.add(word);
+                }
+                cursor.moveToNext();
+
+            }
+            //カーソルは使ったらクローズを忘れない
+            cursor.close();
+
+            return data;
+        }
+    private  ArrayList<Word> getFavoriteData () {
+        ArrayList<Word> data = new ArrayList<>();
+        // wordとfavoriteを結合して、wordIdが一致するものだけ抜き出す
+        String sql ="SELECT * FROM favorite INNER JOIN word ON favorite.wordId = word.id";
+        Cursor cursor = db.rawQuery(sql,null);
+
         cursor.moveToFirst();
 
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < cursor.getCount(); i++) {
-            int wordId = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String contents = cursor.getString(2);
-            String job = cursor.getString(3);
-            String tags = cursor.getString(4);
+            int wordId = cursor.getInt(2);
+            String name = cursor.getString(3);
+            String contents = cursor.getString(4);
+            String job = cursor.getString(5);
+            String tags = cursor.getString(6);
 
             Word word = new Word(wordId, name, contents, job, tags);
-                if(position == 0 && word.getTags().equals("勇気")){
-                    data.add(word);
-                }
-                else if(position == 1 && word.getTags().equals("希望")){
-                    data.add(word);
-                }
-                else if(position == 2 && word.getTags().equals("怒り")){
-                    data.add(word);
-                }
-                else if(position == 3 && word.getTags().equals("激励")){
-                    data.add(word);
-                }
-                // お気に入り
-                //else if(position == 4){
-                //    if(お気に入りフラグ== true){
-                //        data.add(w);
-                //    }
-                //}
-            cursor.moveToNext();
-        }
+            data.add(word);
 
+            cursor.moveToNext();
+
+        }
         //カーソルは使ったらクローズを忘れない
         cursor.close();
+
         return data;
     }
 }
