@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class WordActivity extends AppCompatActivity {
 
 
@@ -17,16 +19,23 @@ public class WordActivity extends AppCompatActivity {
     DatabaseHelper databaseHelper = null;
     private SQLiteDatabase db;
 
+    private Button buttonRegistory;
+    private Button buttonUnregistory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word);
 
+        buttonRegistory = findViewById(R.id.favoriteButtonRegistory);
+        buttonUnregistory = findViewById(R.id.favoriteButtonUnregister);
+
         // データを取得して画面にセット
         setData();
 
-        Button button = findViewById(R.id.favoriteButton);
-        button.setOnClickListener(new View.OnClickListener() {
+
+
+        buttonRegistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // db取得
@@ -38,9 +47,30 @@ public class WordActivity extends AppCompatActivity {
                     db = databaseHelper.getReadableDatabase();
                 }
                 db.execSQL("INSERT INTO " + "favorite(wordId)" + "" + " VALUES("+ wordId + ");");
+                // 登録ボタン非表示
+                buttonRegistory.setVisibility(View.INVISIBLE);
+                // 解除ボタン表示
+                buttonUnregistory.setVisibility(View.VISIBLE);
             }
         });
+        buttonUnregistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // db取得
+                if(databaseHelper == null){
+                    databaseHelper = new DatabaseHelper( getApplicationContext());
+                }
 
+                if(db == null){
+                    db = databaseHelper.getReadableDatabase();
+                }
+                db.execSQL(" DeLETE FROM "  + " favorite " + " WHERE wordId = " + wordId + ";");
+                // 登録ボタン表示
+                buttonRegistory.setVisibility(View.VISIBLE);
+                // 解除ボタン非表示
+                buttonUnregistory.setVisibility(View.INVISIBLE);
+            }
+        });
     }
     private void setData(){
         // view get
@@ -61,5 +91,60 @@ public class WordActivity extends AppCompatActivity {
         word_contents.setText(contents);
         word_job.setText(job);
         word_tags.setText(tags);
+
+        // button set
+        if(databaseHelper == null){
+            databaseHelper = new DatabaseHelper( getApplicationContext());
+        }
+
+        if(db == null){
+            db = databaseHelper.getReadableDatabase();
+        }
+
+        ArrayList<Favorite> data = new ArrayList<Favorite>();
+
+        Cursor cursor = db.query(
+                "favorite",
+                new String[]{"id", "wordId"},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+            int id = cursor.getInt(0);
+            int wordId = cursor.getInt(1);
+
+
+            Favorite favorite = new Favorite(id, wordId);
+            data.add(favorite);
+
+            cursor.moveToNext();
+
+        }
+        //カーソルは使ったらクローズを忘れない
+        cursor.close();
+
+
+        boolean buttonFlg = false;
+
+        for(int i = 0; i < data.size(); i++){
+            if(data.get(i).getWordId() == wordId){
+                buttonFlg = true;
+            }
+        }
+
+        if(buttonFlg){
+            buttonUnregistory.setVisibility(View.VISIBLE);
+            buttonRegistory.setVisibility(View.INVISIBLE);
+        }
+        else{
+            buttonUnregistory.setVisibility(View.INVISIBLE);
+            buttonRegistory.setVisibility(View.VISIBLE);
+        }
     }
 }

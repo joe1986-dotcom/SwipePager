@@ -49,15 +49,28 @@
                 android:textSize="18sp"
                 android:paddingRight="20dp"
                 />
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/favoriteButtonRegistory"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:background="@drawable/favorite_button"
+        android:paddingLeft="3dp"
+        android:drawableLeft="@drawable/ic_star_border_black_24dp"
+        android:text="お気に入り登録"/>
 
-            <Button
-                android:id="@+id/favoriteButton"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:background="@drawable/favorite_button"
-                android:paddingLeft="3dp"
-                android:drawableLeft="@drawable/ic_star_border_black_24dp"
-                android:text="お気に入りに登録"/>
+    <Button
+        android:id="@+id/favoriteButtonUnregister"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:background="@drawable/favorite_button"
+        android:paddingLeft="3dp"
+        android:drawableLeft="@drawable/ic_star_black_24dp"
+        android:text="お気に入り解除"/>
+</RelativeLayout>
+
         </LinearLayout>
 
     </LinearLayout>
