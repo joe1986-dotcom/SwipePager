@@ -23,9 +23,14 @@ public class ListFragment extends Fragment {
 
     private static int position = -1;
 
+    private static int readCount = 0;
+
     DatabaseHelper databaseHelper = null;
     private SQLiteDatabase db;
     RecyclerView mRecyclerView;
+    private boolean onViewOncreatedFlg = false;
+
+    ArrayList<Word> data ;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +38,36 @@ public class ListFragment extends Fragment {
         if(getArguments() != null){
             position = getArguments().getInt(ARG_COUNT);
         }
+    }
+
+    @Override
+    public void onStart() {
+        if(onViewOncreatedFlg){
+            data = LoadData(position);
+        }
+
+        if(onViewOncreatedFlg == false) {
+            if(readCount == 0) {
+                data = LoadData(position - 2);
+            }
+            else if(readCount == 1)
+            {
+                data = LoadData(position-1);
+            }
+            else if (readCount == 2){
+                data = LoadData(position);
+            }
+
+
+            readCount++;
+
+        }
+        if(data.size() > 0) {
+            WordAdapter wordAdapter = new WordAdapter(getContext(), data);
+            mRecyclerView.setAdapter(wordAdapter);
+        }
+        onViewOncreatedFlg = false;
+        super.onStart();
     }
 
     @Nullable
@@ -51,10 +86,13 @@ public class ListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        ArrayList<Word> data = LoadData(position);
+        data = LoadData(position);
         WordAdapter wordAdapter = new WordAdapter(getContext(), data);
         mRecyclerView.setAdapter(wordAdapter);
+        onViewOncreatedFlg = true;
+        readCount = 0;
         super.onViewCreated(view, savedInstanceState);
+
     }
 
 
@@ -97,51 +135,51 @@ public class ListFragment extends Fragment {
         return data;
     }
 
-        private  ArrayList<Word> getWordData (int position) {
-            ArrayList<Word> data = new ArrayList<>();
-            Cursor cursor = db.query(
-                    "word",
-                    new String[]{"id", "name", "contents", "job", "tags"},
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-            );
+    private  ArrayList<Word> getWordData (int position) {
+        ArrayList<Word> data = new ArrayList<>();
+        Cursor cursor = db.query(
+                "word",
+                new String[]{"id", "name", "contents", "job", "tags"},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
 
-            cursor.moveToFirst();
+        cursor.moveToFirst();
 
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < cursor.getCount(); i++) {
-                int wordId = cursor.getInt(0);
-                String name = cursor.getString(1);
-                String contents = cursor.getString(2);
-                String job = cursor.getString(3);
-                String tags = cursor.getString(4);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < cursor.getCount(); i++) {
+            int wordId = cursor.getInt(0);
+            String name = cursor.getString(1);
+            String contents = cursor.getString(2);
+            String job = cursor.getString(3);
+            String tags = cursor.getString(4);
 
-                Word word = new Word(wordId, name, contents, job, tags);
-                if (position == 0 && word.getTags().equals("勇気")) {
-                    data.add(word);
-                } else if (position == 1 && word.getTags().equals("希望")) {
-                    data.add(word);
-                } else if (position == 2 && word.getTags().equals("怒り")) {
-                    data.add(word);
-                } else if (position == 3 && word.getTags().equals("激励")) {
-                    data.add(word);
-                }
-                cursor.moveToNext();
-
+            Word word = new Word(wordId, name, contents, job, tags);
+            if (position == 0 && word.getTags().equals("勇気")) {
+                data.add(word);
+            } else if (position == 1 && word.getTags().equals("希望")) {
+                data.add(word);
+            } else if (position == 2 && word.getTags().equals("怒り")) {
+                data.add(word);
+            } else if (position == 3 && word.getTags().equals("激励")) {
+                data.add(word);
             }
-            //カーソルは使ったらクローズを忘れない
-            cursor.close();
+            cursor.moveToNext();
 
-            return data;
         }
+        //カーソルは使ったらクローズを忘れない
+        cursor.close();
+
+        return data;
+    }
     private  ArrayList<Word> getFavoriteData () {
         ArrayList<Word> data = new ArrayList<>();
         // wordとfavoriteを結合して、wordIdが一致するものだけ抜き出す
-        String sql ="SELECT * FROM favorite INNER JOIN word ON favorite.wordId = word.id";
-        Cursor cursor = db.rawQuery(sql,null);
+        String sql = "SELECT * FROM favorite INNER JOIN word ON favorite.wordId = word.id";
+        Cursor cursor = db.rawQuery(sql, null);
 
         cursor.moveToFirst();
 
