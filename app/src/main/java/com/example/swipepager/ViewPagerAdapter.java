@@ -11,7 +11,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
  */
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
-
     private static final int CARD_ITEM_SIZE = 5;
 
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
@@ -21,7 +20,8 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return ListFragment.newInstance(position);
+        ListFragment fragment = new ListFragment();
+        return fragment.newInstance(position);
     }
 
     @Override

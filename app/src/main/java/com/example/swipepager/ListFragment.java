@@ -21,14 +21,11 @@ public class ListFragment extends Fragment {
 
     private static final String ARG_COUNT ="param1";
 
-    private static int position = -1;
-
-    private static int readCount = 0;
+    private int position = -1;
 
     DatabaseHelper databaseHelper = null;
     private SQLiteDatabase db;
     RecyclerView mRecyclerView;
-    private boolean onViewOncreatedFlg = false;
 
     ArrayList<Word> data ;
 
@@ -42,31 +39,12 @@ public class ListFragment extends Fragment {
 
     @Override
     public void onStart() {
-        if(onViewOncreatedFlg){
-            data = LoadData(position);
-        }
 
-        if(onViewOncreatedFlg == false) {
-            if(readCount == 0) {
-                data = LoadData(position - 2);
-            }
-            else if(readCount == 1)
-            {
-                data = LoadData(position-1);
-            }
-            else if (readCount == 2){
-                data = LoadData(position);
-            }
-
-
-            readCount++;
-
-        }
-        if(data.size() > 0) {
+        data = LoadData(position);
+        if(data != null) {
             WordAdapter wordAdapter = new WordAdapter(getContext(), data);
             mRecyclerView.setAdapter(wordAdapter);
         }
-        onViewOncreatedFlg = false;
         super.onStart();
     }
 
@@ -89,21 +67,16 @@ public class ListFragment extends Fragment {
         data = LoadData(position);
         WordAdapter wordAdapter = new WordAdapter(getContext(), data);
         mRecyclerView.setAdapter(wordAdapter);
-        onViewOncreatedFlg = true;
-        readCount = 0;
         super.onViewCreated(view, savedInstanceState);
 
     }
-
-
-
 
     /**
      * List形式のフラグメントを返す
      * @param counter フラグメントの管理番号
      * @return 生成したフラグメント
      */
-    public static ListFragment newInstance(Integer counter){
+    public ListFragment newInstance(Integer counter){
         position = counter;
         ListFragment fragment = new ListFragment();
         Bundle args= new Bundle();
@@ -116,13 +89,10 @@ public class ListFragment extends Fragment {
 
         ArrayList<Word> data = new ArrayList<>();
 
-        if(databaseHelper == null){
             databaseHelper = new DatabaseHelper( getActivity().getApplicationContext());
-        }
 
-        if(db == null){
             db = databaseHelper.getReadableDatabase();
-        }
+
         //カーソルを移動して上から順に読み込んでるイメージ。
         if(position != 4) {
             data = getWordData(position);
@@ -130,8 +100,6 @@ public class ListFragment extends Fragment {
         else {
             data = getFavoriteData();
         }
-
-
         return data;
     }
 

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class WordActivity extends AppCompatActivity {
 
-
     private int wordId = -1;
     DatabaseHelper databaseHelper = null;
     private SQLiteDatabase db;
@@ -31,8 +30,6 @@ public class WordActivity extends AppCompatActivity {
 
         // データを取得して画面にセット
         setData();
-
-
 
         buttonRegistory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +114,6 @@ public class WordActivity extends AppCompatActivity {
         for (int i = 0; i < cursor.getCount(); i++) {
             int id = cursor.getInt(0);
             int wordId = cursor.getInt(1);
-
 
             Favorite favorite = new Favorite(id, wordId);
             data.add(favorite);

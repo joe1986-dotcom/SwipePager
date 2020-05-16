@@ -9,7 +9,6 @@ public class Favorite {
         this.wordId = wordId;
     }
 
-
     public int getId() {
         return id;
     }
