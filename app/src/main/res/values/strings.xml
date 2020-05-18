@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SwipePager</string>
+    <string name="app_name">名言の銘</string>
     <string name="table_name_word">word</string>
     <string name="table_name_favorite">favorite</string>
 
